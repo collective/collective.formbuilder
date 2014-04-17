@@ -5,7 +5,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.formbuilder">
 
-  <five:registerPackage package="." initialize=".initialize" />
+  <include file="fields.zcml" />
 
   <genericsetup:registerProfile
       name="default"
@@ -25,5 +25,6 @@
     provides=".interfaces.IModelSerializer"
     factory=".modelserializer.ModelSerializer"
     />
+
 
 </configure>
