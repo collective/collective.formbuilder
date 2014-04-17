@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.formbuilder">
+
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.formbuilder"
+      directory="profiles/default"
+      description="Installs the collective.formbuilder package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+
+  <utility
+    provides=".interfaces.IJSONSerializer"
+    factory=".jsonserializer.JSONSerializer"
+    />
+
+  <utility
+    provides=".interfaces.IModelSerializer"
+    factory=".modelserializer.ModelSerializer"
+    />
+
+</configure>
