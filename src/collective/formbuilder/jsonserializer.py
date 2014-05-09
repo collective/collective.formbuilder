@@ -101,6 +101,12 @@ class BaseHandler(object):
         return data
 
 
+class EmailHandler(BaseHandler):
+    pass
+
+
 TextLineHandler = BaseHandler()
 TextHandler = BaseHandler('paragraph')
 DateHandler = BaseHandler('date')
+EmailHandler = BaseHandler('email')
+FileHandler = BaseHandler('file')

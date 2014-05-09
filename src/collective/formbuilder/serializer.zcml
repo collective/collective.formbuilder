@@ -19,6 +19,17 @@
         name="date"
         />
 
+    <utility
+        component=".modelserializer.EmailHandler"
+        name="email"
+        />
+
+
+    <utility
+        component=".modelserializer.NamedBlobFileHandler"
+        name="file"
+        />
+
 
     <!-- from Schema to JSON serializer -->
     <utility
@@ -33,6 +44,17 @@
     <utility
         component=".jsonserializer.DateHandler"
         name="zope.schema.Date"
+        />
+
+
+    <utility
+        component=".jsonserializer.EmailHandler"
+        name="collective.formbuilder.fields.Email"
+        />
+
+    <utility
+        component=".jsonserializer.FileHandler"
+        name="plone.namedfile.field.NamedBlobFile"
         />
 
 

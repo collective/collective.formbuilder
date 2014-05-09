@@ -5,7 +5,8 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.formbuilder">
 
-  <include file="fields.zcml" />
+  <include file="serializer.zcml" />
+  <include package=".fields" />
 
   <genericsetup:registerProfile
       name="default"
@@ -14,7 +15,6 @@
       description="Installs the collective.formbuilder package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-
 
   <utility
     provides=".interfaces.IJSONSerializer"
@@ -25,6 +25,5 @@
     provides=".interfaces.IModelSerializer"
     factory=".modelserializer.ModelSerializer"
     />
-
 
 </configure>
