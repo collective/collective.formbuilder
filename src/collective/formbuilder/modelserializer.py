@@ -27,14 +27,12 @@ class ModelSerializer(object):
         xml.set('xmlns', XML_NAMESPACE)
 
         schema_element = etree.Element('schema')
-
         for f in data.get('fields'):
             serializer = queryUtility(
                 IModelFieldSerializer, name=f['field_type']
             )
             if not serializer:
                 serializer = queryUtility(IModelFieldSerializer)
-
             field = serializer(f)
             schema_element.append(field)
 
@@ -46,36 +44,22 @@ class ModelSerializer(object):
 class BaseHandler(object):
 
     name_attr = 'cid'
-
     options_attr = 'field_options'
 
     field_attributes = {
         'required': 'required',
-        'title': 'label',
+        'title': 'label'
+    }
+
+    field_options = {
         'description': 'description'
     }
 
     def __init__(self, field_type='zope.schema.TextLine'):
         self.field_type = field_type
 
-    def __call__(self, field):
-        """Create and return a new element representing the given field
-
-        # <schema>
-        #  <field name="text" type="plone.app.textfield.RichText">
-        #   <description>Descrizione del campo</description>
-        #   <required>True</required>
-        #   <title i18n:translate="">Text</title>
-        #  </field>
-        # </schema>
-
-        """
-
-        element = etree.Element('field')
-        element.set('name', field.get(self.name_attr))
-        element.set('type', self.field_type)
-
-        for name, attr in self.field_attributes.items():
+    def set_children(self, element, field, attributes):
+        for name, attr in attributes.items():
             value = field.get(attr)
             child = None
             if value is not None:
@@ -85,6 +69,24 @@ class BaseHandler(object):
                 child.text = value
                 element.append(child)
 
+    def __call__(self, field):
+        """Create and return a new element representing the given field
+        """
+
+        element = etree.Element('field')
+        element.set('name', field.get(self.name_attr))
+        element.set('type', self.field_type)
+
+        self.set_children(
+            element,
+            field,
+            self.field_attributes
+        )
+
+        self.set_children(
+            element,
+            field[self.options_attr],
+            self.field_options)
         return element
 
 

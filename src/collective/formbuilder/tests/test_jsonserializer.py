@@ -23,7 +23,6 @@ class TestSerializer(unittest.TestCase):
         self.assertEqual(data.get('fields'), [])
 
     def test_fields(self):
-        serializer = getUtility(IJSONSerializer)
         model = """<model
             xmlns="http://namespaces.plone.org/supermodel/schema">
             <schema>
@@ -43,9 +42,10 @@ class TestSerializer(unittest.TestCase):
             {
                 "label": "My field",
                 "field_type": "text",
-                "description": "My short description",
                 "required": False,
-                "field_options": {},
+                "field_options": {
+                    "description": "My short description",
+                },
                 "cid": "c12"
             },
             {
@@ -57,14 +57,17 @@ class TestSerializer(unittest.TestCase):
             }
         ]
 
+        serializer = getUtility(IJSONSerializer)
         data = json.loads(serializer(model))
+
         self.assertTrue('fields' in data)
+
         fields = data.get('fields')
         self.assertEqual(len(fields), 2)
 
         i = 0
-        for el in fields:
-            check = results[i]
+        for el in results:
+            check = fields[i]
             for k, v in el.items():
                 self.assertEqual(check[k], v)
 

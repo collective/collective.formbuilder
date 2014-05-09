@@ -54,12 +54,16 @@ def _bool_transform(value):
 class BaseHandler(object):
 
     name_attr = 'cid'
-
+    type_attr = 'field_type'
     options_attr = 'field_options'
 
     field_attributes = {
         'required': ('required', _bool_transform),
         'title': ('label', _no_transform),
+
+    }
+
+    field_options = {
         'description': ('description', _no_transform)
     }
 
@@ -71,15 +75,29 @@ class BaseHandler(object):
         """
         data = {
             self.name_attr: field.attrib['name'],
-            'field_options': {}
+            self.type_attr: self.field_type
         }
 
         for el in field:
-            attr, transform = self.field_attributes.get(noNS(el.tag))
+            attr, transform = self.field_attributes.get(
+                noNS(el.tag),
+                (None, None)
+            )
             if not attr:
                 continue
             data[attr] = transform(el.text)
 
+        field_options = {}
+        for el in field:
+            attr, transform = self.field_options.get(
+                noNS(el.tag),
+                (None, None)
+            )
+            if not attr:
+                continue
+            field_options[attr] = transform(el.text)
+
+        data['field_options'] = field_options
         return data
 
 

@@ -32,7 +32,10 @@ class TestSerializer(unittest.TestCase):
         self.assertEqual(title.text, data['label'])
 
         description = field.xpath('./*[local-name()="description"]')[0]
-        self.assertEqual(description.text, data['description'])
+        self.assertEqual(
+            description.text,
+            data['field_options']['description']
+        )
 
         required = field.xpath('./*[local-name()="required"]')[0]
         self.assertEqual(required.text, str(data['required']))
@@ -63,18 +66,20 @@ class TestSerializer(unittest.TestCase):
                 {
                     "label": "Simple field",
                     "field_type": "text",
-                    "description": "Field description",
                     "required": True,
-                    "field_options": {},
+                    "field_options": {
+                        "description": "Field description",
+                    },
                     "cid":"c22"
                 },
 
                 {
                     "label": "Other field",
                     "field_type": "paragraph",
-                    "description": "A short description",
                     "required": False,
-                    "field_options": {},
+                    "field_options": {
+                        "description": "A short description",
+                    },
                     "cid":"c23"
                 }
 
@@ -104,9 +109,10 @@ class TestSerializer(unittest.TestCase):
         data = {
             "label": "Date field",
             "field_type": "date",
-            "description": "A short description",
             "required": False,
-            "field_options": {},
+            "field_options": {
+                "description": "A short description",
+            },
             "cid": "c01"
         }
 
