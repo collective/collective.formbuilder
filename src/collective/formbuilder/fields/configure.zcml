@@ -9,4 +9,28 @@
         name="collective.formbuilder.fields.Email"
         />
 
+    <utility
+        component=".sequence.RadiobuttonHandler"
+        name="collective.formbuilder.fields.Radiobutton"
+        />
+
+    <utility
+        component=".sequence.CheckboxHandler"
+        name="collective.formbuilder.fields.Checkbox"
+        />
+
+
+    <!-- z3c.form default widgets -->
+    <adapter
+      factory="z3c.form.browser.radio.RadioFieldWidget"
+      for="collective.formbuilder.fields.IRadiobutton
+           z3c.form.interfaces.IFormLayer"
+      />
+
+    <adapter
+      factory="z3c.form.browser.checkbox.CheckBoxFieldWidget"
+      for="collective.formbuilder.fields.ICheckbox
+           z3c.form.interfaces.IFormLayer"
+      />
+
 </configure>

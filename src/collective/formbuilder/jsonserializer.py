@@ -70,6 +70,9 @@ class BaseHandler(object):
     def __init__(self, field_type='text'):
         self.field_type = field_type
 
+    def set_extra_data(self, field, data):
+        """Override this method if you want to set other options"""
+
     def __call__(self, field):
         """Create and return a new element representing the given field
         """
@@ -97,16 +100,44 @@ class BaseHandler(object):
                 continue
             field_options[attr] = transform(el.text)
 
-        data['field_options'] = field_options
+        data[self.options_attr] = field_options
+        self.set_extra_data(field, data)
         return data
 
 
-class EmailHandler(BaseHandler):
-    pass
+class ChoiceHandler(BaseHandler):
+
+    def set_extra_data(self, field, data):
+        """Override this method if you want to set other options"""
+        values = field.xpath(
+            './*[local-name()="values"]/*[local-name()="element"]'
+        )
+        default = field.xpath('./*[local-name()="default"]')
+        if len(default) == 1:
+            default_value = default[0].text
+        else:
+            default_value = None
+        options = []
+
+        for el in values:
+            val = el.text
+            opt = {
+                "label": val
+            }
+            if val == default_value:
+                opt['checked'] = True
+            else:
+                opt['checked'] = False
+            options.append(opt)
+        data[self.options_attr]['options'] = options
 
 
 TextLineHandler = BaseHandler()
 TextHandler = BaseHandler('paragraph')
 DateHandler = BaseHandler('date')
-EmailHandler = BaseHandler('email')
 FileHandler = BaseHandler('file')
+DropdownHandler = ChoiceHandler('dropdown')
+
+EmailHandler = BaseHandler('email')
+RadioButtonHandler = ChoiceHandler('radio')
+CheckboxHandler = ChoiceHandler('checkboxes')

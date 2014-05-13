@@ -17,5 +17,5 @@ class Email(TextLine):
         return super(Email, self).constraint(value)
 
 
-# supermodel support
+# plone.supermodel export/import handler
 EmailHandler = BaseHandler(Email)

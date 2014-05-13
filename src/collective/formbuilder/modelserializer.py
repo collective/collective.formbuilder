@@ -69,6 +69,14 @@ class BaseHandler(object):
                 child.text = value
                 element.append(child)
 
+    def set_field_options(self, element, field):
+        self.set_children(
+            element,
+            field[self.options_attr],
+            self.field_options
+        )
+
+
     def __call__(self, field):
         """Create and return a new element representing the given field
         """
@@ -83,15 +91,43 @@ class BaseHandler(object):
             self.field_attributes
         )
 
-        self.set_children(
-            element,
-            field[self.options_attr],
-            self.field_options)
+        self.set_field_options(element, field)
         return element
+
+
+class ChoiceHandler(BaseHandler):
+
+    def set_field_options(self, element, field):
+        super(ChoiceHandler, self).set_field_options(element, field)
+
+        #   <values>
+        #     <element>uno</element>
+        #     <element>due</element>
+        #     <element>tre</element>
+        #   </values>
+        field_values = etree.Element('values')
+        default = None
+
+        for opt in field[self.options_attr]['options']:
+            value = opt["label"]
+            if opt['checked']:
+                default = value
+            child = etree.Element('element')
+            child.text = value
+            field_values.append(child)
+        element.append(field_values)
+        if default:
+            child = etree.Element('default')
+            child.text = default
+            element.append(child)
 
 
 TextLineHandler = BaseHandler()
 TextHandler = BaseHandler('zope.schema.Text')
 DateHandler = BaseHandler('zope.schema.Date')
-EmailHandler = BaseHandler('collective.formbuilder.fields.Email')
 NamedBlobFileHandler = BaseHandler('plone.namedfile.field.NamedBlobFile')
+DropdownHandler = ChoiceHandler('zope.schema.Choice')
+
+EmailHandler = BaseHandler('collective.formbuilder.fields.Email')
+CheckboxHandler = ChoiceHandler('collective.formbuilder.fields.Checkbox')
+RadioButtonHandler = ChoiceHandler('collective.formbuilder.fields.Radiobutton')
