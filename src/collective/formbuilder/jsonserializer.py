@@ -121,6 +121,8 @@ class ChoiceHandler(BaseHandler):
 
         for el in values:
             val = el.text
+            if not val:
+                continue
             opt = {
                 "label": val
             }

@@ -76,7 +76,6 @@ class BaseHandler(object):
             self.field_options
         )
 
-
     def __call__(self, field):
         """Create and return a new element representing the given field
         """
@@ -110,6 +109,8 @@ class ChoiceHandler(BaseHandler):
 
         for opt in field[self.options_attr]['options']:
             value = opt["label"]
+            if not value:
+                continue
             if opt['checked']:
                 default = value
             child = etree.Element('element')
