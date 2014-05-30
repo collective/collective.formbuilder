@@ -113,6 +113,38 @@ class ChoiceHandler(BaseHandler):
             './*[local-name()="values"]/*[local-name()="element"]'
         )
         default = field.xpath('./*[local-name()="default"]')
+        default_value = []
+        if len(default) == 1:
+            default_value.append(default[0].text)
+
+        options = []
+
+        for el in values:
+            val = el.text
+            if not val:
+                continue
+            opt = {
+                "label": val
+            }
+            if val in default_value:
+                opt['checked'] = True
+            else:
+                opt['checked'] = False
+            options.append(opt)
+        data[self.options_attr]['options'] = options
+
+
+class ListHandler(BaseHandler):
+
+    def set_extra_data(self, field, data):
+        """Override this method if you want to set other options"""
+        values = field.xpath(
+            './*[local-name()="value_type"]'
+            '/*[local-name()="values"]'
+            '/*[local-name()="element"]'
+        )
+
+        default = field.xpath('./*[local-name()="default"]')
         if len(default) == 1:
             default_value = default[0].text
         else:
@@ -142,4 +174,4 @@ DropdownHandler = ChoiceHandler('dropdown')
 
 EmailHandler = BaseHandler('email')
 RadioButtonHandler = ChoiceHandler('radio')
-CheckboxHandler = ChoiceHandler('checkboxes')
+CheckboxHandler = ListHandler('checkboxes')

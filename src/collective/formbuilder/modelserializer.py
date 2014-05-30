@@ -105,6 +105,7 @@ class ChoiceHandler(BaseHandler):
         #     <element>tre</element>
         #   </values>
         field_values = etree.Element('values')
+
         default = None
 
         for opt in field[self.options_attr]['options']:
@@ -123,6 +124,45 @@ class ChoiceHandler(BaseHandler):
             element.append(child)
 
 
+class ListHandler(BaseHandler):
+
+    field_value_type = 'zope.schema.Choice'
+
+    def set_field_options(self, element, field):
+        super(ListHandler, self).set_field_options(element, field)
+
+        # <value_type type="zope.schema.Choice">
+        #   <values>
+        #     <element>a</element>
+        #     <element>b</element>
+        #   </values>
+        # </value_type>
+        value_type = etree.Element('value_type')
+        value_type.set('type', self.field_value_type)
+
+        field_values = etree.Element('values')
+        default = []
+
+        for opt in field[self.options_attr]['options']:
+            value = opt["label"]
+            if not value:
+                continue
+            if opt['checked']:
+                default.append(value)
+            child = etree.Element('element')
+            child.text = value
+            field_values.append(child)
+
+        value_type.append(field_values)
+        element.append(value_type)
+
+        # XXX: default doesn't work properly with multichoice
+        # if default:
+        #     child = etree.Element('default')
+        #     child.text = default
+        #     element.append(child)
+
+
 TextLineHandler = BaseHandler()
 TextHandler = BaseHandler('zope.schema.Text')
 DateHandler = BaseHandler('zope.schema.Date')
@@ -130,5 +170,5 @@ NamedBlobFileHandler = BaseHandler('plone.namedfile.field.NamedBlobFile')
 DropdownHandler = ChoiceHandler('zope.schema.Choice')
 
 EmailHandler = BaseHandler('collective.formbuilder.fields.Email')
-CheckboxHandler = ChoiceHandler('collective.formbuilder.fields.Checkbox')
 RadioButtonHandler = ChoiceHandler('collective.formbuilder.fields.Radiobutton')
+CheckboxHandler = ListHandler('collective.formbuilder.fields.Checkbox')
