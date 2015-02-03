@@ -7,8 +7,8 @@ setup(name='collective.formbuilder',
       version=version,
       description="Formbuilder for Plone",
       long_description=(
-          open("README.txt").read() + "\n" +
-          open(os.path.join("docs", "HISTORY.txt")).read()
+          open("README.rst").read() + "\n" +
+          open("CHANGES.rst").read()
       ),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers

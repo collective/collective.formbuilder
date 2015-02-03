@@ -1,13 +1,11 @@
+# -*- encoding: utf-8 -*-
 import json
+
 from lxml import etree
-
-from zope.component import queryUtility
-from zope.component import getUtility
-from zope.interface import implementer
-
 from plone.supermodel.interfaces import XML_NAMESPACE
-from plone.supermodel.interfaces import FIELDSETS_KEY
 from plone.supermodel.utils import prettyXML
+from zope.component import queryUtility
+from zope.interface import implementer
 
 from .utils import get_nsmap
 from .interfaces import IModelFieldSerializer
@@ -99,6 +97,13 @@ class ChoiceHandler(BaseHandler):
     def set_field_options(self, element, field):
         super(ChoiceHandler, self).set_field_options(element, field)
 
+        # {u'options': [
+        #   {u'checked': False, u'label': u'uno'},
+        #   {u'checked': False, u'label': u'due'},
+        #   {u'checked': False, u'label': u'tre'}
+        # ]},
+        # u'label': u'Senza titolo'}
+
         #   <values>
         #     <element>uno</element>
         #     <element>due</element>
@@ -108,10 +113,16 @@ class ChoiceHandler(BaseHandler):
 
         default = None
 
+        values = []
         for opt in field[self.options_attr]['options']:
-            value = opt["label"]
+            value = opt["label"].strip()
             if not value:
+                # TODO: logging
                 continue
+            if value in values:
+                # TODO: logging
+                continue
+            values.append(value)
             if opt['checked']:
                 default = value
             child = etree.Element('element')
@@ -143,10 +154,16 @@ class ListHandler(BaseHandler):
         field_values = etree.Element('values')
         default = []
 
+        values = []
         for opt in field[self.options_attr]['options']:
-            value = opt["label"]
+            value = opt["label"].strip()
             if not value:
+                # TODO: logging
                 continue
+            if value in values:
+                # TODO: logging
+                continue
+            values.append(value)
             if opt['checked']:
                 default.append(value)
             child = etree.Element('element')
