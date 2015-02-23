@@ -25,6 +25,7 @@ class ModelSerializer(object):
         xml.set('xmlns', XML_NAMESPACE)
 
         schema_element = etree.Element('schema')
+        import pdb; pdb.set_trace()
         for f in data.get('fields'):
             serializer = queryUtility(
                 IModelFieldSerializer, name=f['field_type']
@@ -186,6 +187,7 @@ DateHandler = BaseHandler('zope.schema.Date')
 NamedBlobFileHandler = BaseHandler('plone.namedfile.field.NamedBlobFile')
 DropdownHandler = ChoiceHandler('zope.schema.Choice')
 
+SectionBreakHandler = BaseHandler('collective.formbuilder.fields.SectionBreak')
 EmailHandler = BaseHandler('collective.formbuilder.fields.Email')
 RadioButtonHandler = ChoiceHandler('collective.formbuilder.fields.Radiobutton')
 CheckboxHandler = ListHandler('collective.formbuilder.fields.Checkbox')

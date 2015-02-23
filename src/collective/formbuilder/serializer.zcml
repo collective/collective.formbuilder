@@ -10,6 +10,11 @@
         />
 
     <utility
+        component=".modelserializer.SectionBreakHandler"
+        name="section_break"
+        />
+
+    <utility
         component=".modelserializer.TextHandler"
         name="paragraph"
         />
@@ -50,6 +55,11 @@
     <!-- from Schema to JSON serializer -->
     <utility
         component=".jsonserializer.TextLineHandler"
+        />
+
+    <utility
+        component=".jsonserializer.SectionBreakHandler"
+        name="collective.formbuilder.fields.SectionBreak"
         />
 
     <utility

@@ -10,6 +10,11 @@
         />
 
     <utility
+        component=".sectionbreak.SectionBreakHandler"
+        name="collective.formbuilder.fields.SectionBreak"
+        />
+
+    <utility
         component=".sequence.RadiobuttonHandler"
         name="collective.formbuilder.fields.Radiobutton"
         />

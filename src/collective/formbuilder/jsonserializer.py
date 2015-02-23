@@ -2,7 +2,6 @@ import json
 from StringIO import StringIO
 from lxml import etree
 from zope.component import queryUtility
-from zope.component import getUtility
 from zope.interface import implementer
 from plone.supermodel.utils import noNS
 from .interfaces import IJSONSerializer
@@ -173,5 +172,6 @@ FileHandler = BaseHandler('file')
 DropdownHandler = ChoiceHandler('dropdown')
 
 EmailHandler = BaseHandler('email')
+SectionBreakHandler = BaseHandler('section_break')
 RadioButtonHandler = ChoiceHandler('radio')
 CheckboxHandler = ListHandler('checkboxes')
