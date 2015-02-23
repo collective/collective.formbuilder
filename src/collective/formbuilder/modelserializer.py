@@ -25,7 +25,6 @@ class ModelSerializer(object):
         xml.set('xmlns', XML_NAMESPACE)
 
         schema_element = etree.Element('schema')
-        import pdb; pdb.set_trace()
         for f in data.get('fields'):
             serializer = queryUtility(
                 IModelFieldSerializer, name=f['field_type']
