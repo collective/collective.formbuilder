@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="collective.formbuilder">
 
@@ -36,6 +37,20 @@
       factory="z3c.form.browser.checkbox.CheckBoxFieldWidget"
       for="collective.formbuilder.fields.ICheckbox
            z3c.form.interfaces.IFormLayer"
+      />
+
+    <adapter
+      factory=".sectionbreak.SectionBreakFieldWidget"
+      for="collective.formbuilder.fields.sectionbreak.ISectionBreak
+           z3c.form.interfaces.IFormLayer"
+      />
+
+    <browser:page
+      name="ploneform-render-widget"
+      for=".sectionbreak.ISectionBreakWidget"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      template="sectionbreak.pt"
+      permission="zope.Public"
       />
 
 </configure>
