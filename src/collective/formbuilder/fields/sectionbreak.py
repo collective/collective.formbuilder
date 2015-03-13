@@ -8,8 +8,6 @@ from z3c.form.interfaces import IFormLayer, IFieldWidget, ITextWidget
 from z3c.form.widget import FieldWidget
 from z3c.form.browser import text
 
-# TODO: definire un widget specifico
-
 
 class ISectionBreak(ITextLine):
     """ """
