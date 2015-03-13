@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+
+
+<div
+   tal:define="widget nocall:context;
+               fieldname_class string:kssattr-fieldname-${widget/name};"
+   tal:attributes="data-fieldname widget/name;
+                   id string:formfield-${widget/id};">
+
+    <a name="" tal:attributes="name widget/field/getName"></a>
+    <hr class="back-diag">
+    <h2 i18n:translate="" tal:content="widget/label">label</h2>
+    <div
+            tal:define="description widget/field/description"
+            i18n:translate=""
+            tal:content="structure description"
+            tal:condition="description"
+            >field description
+    </div>
+</div>
+
+
+</html>
